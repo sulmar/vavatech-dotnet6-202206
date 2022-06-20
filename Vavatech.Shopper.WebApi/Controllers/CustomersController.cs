@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 
@@ -48,7 +49,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // POST api/customers
         [HttpPost]
-        public ActionResult<Customer> Add(Customer customer)
+        public ActionResult<Customer> Add([FromBody] Customer customer)
         {
             _customerRepository.Add(customer);
 
@@ -60,7 +61,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // PUT api/customers/{id}
         [HttpPut("{id}")]
-        public ActionResult Put(int id, Customer customer)
+        public ActionResult Put(int id, [FromBody] Customer customer)
         {
             if (id != customer.Id)
                 return BadRequest();
@@ -71,7 +72,24 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         }
 
-        // PATCH
+        // Install-Package Microsoft.AspNetCore.JsonPatch
+        // builder.Services.AddControllers().AddNewtonsoftJson();
+        // Content-Type: application/json-patch+json
+        // PATCH api/customers/{id}
+        // JS: https://www.npmjs.com/package/jsonpatch
+        [HttpPatch("{id}")]
+        public ActionResult Patch(int id, [FromBody] JsonPatchDocument<Customer> jsonPatch)
+        {
+            var customer = _customerRepository.Get(id);
+
+            jsonPatch.ApplyTo(customer);
+
+            return NoContent();
+        }
+
+        // JSON Merge Patch
+        // Content-Type: application/merge-patch+json
+        // https://datatracker.ietf.org/doc/html/rfc7386
 
     }
 }
