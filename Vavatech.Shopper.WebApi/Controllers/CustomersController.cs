@@ -29,5 +29,20 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
             return customers;
         }
+
+        // GET api/customers/{id}
+
+        [HttpGet("api/customers/{id}")]
+        public ActionResult<Customer> Get(int id)
+        {
+            var customer = _customerRepository.Get(id);
+
+            if (customer == null)
+            {
+                return new NotFoundResult();
+            }    
+
+            return new OkObjectResult(customer);
+        }
     }
 }

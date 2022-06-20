@@ -26,7 +26,12 @@ namespace Vavatech.Shopper.Infrastructure
 
         public Customer Get(int id)
         {
-            return customers[id];
+            if (customers.TryGetValue(id, out Customer customer))
+            {
+                return customer;
+            }
+
+            return null;
         }
 
         public void Remove(int id)
