@@ -1,4 +1,5 @@
 using Bogus;
+using Newtonsoft.Json.Converters;
 using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
@@ -11,7 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Install-Package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -22,6 +22,8 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
             RuleFor(p => p.Email, (f, customer) => $"{customer.FirstName}.{customer.LastName}@domain.com");
             RuleFor(p => p.Gender, f => (Gender)f.Person.Gender);
             RuleFor(p => p.IsRemoved, f => f.Random.Bool(0.2f));
+
+            Ignore(p => p.Pesel);
         }
     }
 }

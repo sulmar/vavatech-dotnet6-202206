@@ -72,6 +72,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Customer>> Get([FromQuery] CustomerSearchCriteria searchCriteria)
         {
+            var req = this.HttpContext.Request;
+
             var customers = _customerRepository.Get(searchCriteria);
 
             return Ok(customers);

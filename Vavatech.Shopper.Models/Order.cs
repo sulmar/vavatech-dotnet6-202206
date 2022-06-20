@@ -8,5 +8,7 @@ namespace Vavatech.Shopper.Models
 {
     public class Order : BaseEntity
     {
+        public DateOnly DateOrder { get; set; }
+        public Customer Customer { get; set; }
     }
 }
