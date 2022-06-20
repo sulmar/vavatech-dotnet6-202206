@@ -1,4 +1,5 @@
-﻿using Vavatech.Shopper.Models;
+﻿using Bogus;
+using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 
 namespace Vavatech.Shopper.Infrastructure
@@ -7,14 +8,9 @@ namespace Vavatech.Shopper.Infrastructure
     {
         private IDictionary<int, Customer> customers;
 
-        public FakeCustomerRepository()
+        public FakeCustomerRepository(Faker<Customer> faker)
         {
-            customers = new Dictionary<int, Customer>
-            {
-                [1] = new Customer { Id = 1, FirstName = "John", LastName = "Smith", Gender = Gender.Male },
-                [2] = new Customer { Id = 2, FirstName = "Ann", LastName = "Smith", Gender = Gender.Female },
-                [3] = new Customer { Id = 3, FirstName = "Bob", LastName = "Smith", Gender = Gender.Male },
-            };
+            customers = faker.Generate(100).ToDictionary(p=>p.Id);
         }
 
         public void Add(Customer customer)

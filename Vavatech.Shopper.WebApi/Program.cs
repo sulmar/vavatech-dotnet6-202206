@@ -1,4 +1,7 @@
+using Bogus;
 using Vavatech.Shopper.Infrastructure;
+using Vavatech.Shopper.Infrastructure.Fakers;
+using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
+builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 
 var app = builder.Build();
 
