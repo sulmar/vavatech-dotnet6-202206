@@ -2,17 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
+using Vavatech.Shopper.Models.SearchCriterias;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
+
+
     [Route("api/customers")]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
+        
 
         public CustomersController(ICustomerRepository customerRepository)
         {
-            _customerRepository = customerRepository;
+            _customerRepository = customerRepository;            
         }
 
 
@@ -24,17 +28,19 @@ namespace Vavatech.Shopper.WebApi.Controllers
         }
 
         // GET api/customers
-        [HttpGet]
-        public IEnumerable<Customer> Get()
-        {
-            var customers = _customerRepository.Get();
+        //[HttpGet]
+        //public IEnumerable<Customer> Get()
+        //{
+        //    var customers = _customerRepository.Get();
 
-            return customers;
-        }
+        //    return customers;
+        //}
+
+
 
         // GET api/customers/{id}
-
-        [HttpGet("{id}", Name = "GetCustomerById")]
+        // https://docs.microsoft.com/pl-pl/aspnet/core/fundamentals/routing?view=aspnetcore-6.0#route-constraints
+        [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]
         public ActionResult<Customer> Get(int id)
         {
             var customer = _customerRepository.Get(id);
@@ -45,6 +51,30 @@ namespace Vavatech.Shopper.WebApi.Controllers
             }    
 
             return Ok(customer);
+        }
+
+        // GET api/customers/{lastName}
+        [HttpGet("{lastName:minlength(3)}")]
+        public ActionResult<Customer> Get(string lastName)
+        {
+            var customer = _customerRepository.Get(lastName);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(customer);
+        }
+
+
+        // GET api/customers?firstName=John&lastName=Smith
+        [HttpGet]
+        public ActionResult<IEnumerable<Customer>> Get([FromQuery] CustomerSearchCriteria searchCriteria)
+        {
+            var customers = _customerRepository.Get(searchCriteria);
+
+            return Ok(customers);
         }
 
         // POST api/customers
@@ -90,6 +120,19 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // JSON Merge Patch
         // Content-Type: application/merge-patch+json
         // https://datatracker.ietf.org/doc/html/rfc7386
+
+
+        // DELETE api/customers/{id}
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            _customerRepository.Remove(id);
+
+            return Ok();
+        }
+
+
+       
 
     }
 }
