@@ -16,7 +16,8 @@ namespace Vavatech.Shopper.Infrastructure
         public void Add(Customer customer)
         {
             var id = customers.Max(c=>c.Key);
-            customers[++id] = customer;
+            customer.Id = ++id;
+            customers[customer.Id] = customer;
         }
 
         public IEnumerable<Customer> Get()
