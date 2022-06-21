@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Vavatech.Shopper.Domain.Services;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
@@ -133,6 +134,13 @@ namespace Vavatech.Shopper.WebApi.Controllers
             return Ok();
         }
 
+
+        public ActionResult<decimal> Calculate([FromServices] IPriceCalculatorService priceCalculatorService, int productId, int customerId)
+        {
+            var price = priceCalculatorService.CalculatePrice(productId, customerId);
+
+            return Ok(price);
+        }
 
        
 

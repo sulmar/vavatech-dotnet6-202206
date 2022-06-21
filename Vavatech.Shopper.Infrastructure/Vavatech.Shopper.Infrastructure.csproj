@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vavatech.Shopper.Models\Vavatech.Shopper.Models.csproj" />
+    <ProjectReference Include="..\Vavatech.Shopper.Models\Vavatech.Shopper.Domain.csproj" />
   </ItemGroup>
 
 </Project>
