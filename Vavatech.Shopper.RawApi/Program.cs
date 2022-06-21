@@ -1,30 +1,41 @@
 
+using Vavatech.Shopper.RawApi.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // Logger (middleware)
-app.Use(async (context, next) =>
-{
-    Console.WriteLine($"{context.Request.Method} {context.Request.Path}");
+//app.Use(async (context, next) =>
+//{
+//    Console.WriteLine($"{context.Request.Method} {context.Request.Path}");
 
-    await next();
+//    await next();
 
-    Console.WriteLine($"{context.Response.StatusCode}");
+//    Console.WriteLine($"{context.Response.StatusCode}");
 
-});
+//});
+
+
 
 // Authorization (middleware)
-app.Use(async (context, next) =>
-{
-    if (context.Request.Headers.TryGetValue("Authorization", out var value))
-    {
-        await next();
-    }
-    else
-    {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-    }
-});
+//app.Use(async (context, next) =>
+//{
+//    if (context.Request.Headers.TryGetValue("Authorization", out var value))
+//    {
+//        await next();
+//    }
+//    else
+//    {
+//        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+//    }
+//});
+
+// app.UseMiddleware<AuthorizationMiddleware>();
+// app.UseMiddleware<LoggerMiddleware>();
+
+app.UseLogger();
+app.UseMyAuthorization();
+
 
 
 app.Use(async (context, next) =>
