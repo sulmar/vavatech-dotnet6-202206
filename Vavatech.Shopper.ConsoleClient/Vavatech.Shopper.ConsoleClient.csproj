@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vavatech.Shopper.Infrastructure\Vavatech.Shopper.Infrastructure.csproj" />
-    <ProjectReference Include="..\Vavatech.Shopper.Models\Vavatech.Shopper.Models.csproj" />
+    <ProjectReference Include="..\Vavatech.Shopper.Models\Vavatech.Shopper.Domain.csproj" />
   </ItemGroup>
 
 </Project>
