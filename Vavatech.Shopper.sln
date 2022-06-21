@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.WebApiStartup", "Vavatech.Shopper.WebApiStartup\Vavatech.Shopper.WebApiStartup.csproj", "{C94643CE-79AB-48FB-828C-E445F8BDBF82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.WebApiEndpoints", "Vavatech.Shopper.WebApiEndpoints\Vavatech.Shopper.WebApiEndpoints.csproj", "{1A745C96-9B3C-4BAA-8DEB-3EAA5164A8D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.WebApiEndpoints", "Vavatech.Shopper.WebApiEndpoints\Vavatech.Shopper.WebApiEndpoints.csproj", "{1A745C96-9B3C-4BAA-8DEB-3EAA5164A8D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.RawApi", "Vavatech.Shopper.RawApi\Vavatech.Shopper.RawApi.csproj", "{FFE0E683-61F0-4E50-AA0E-5E20F487D13E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.RawApi", "Vavatech.Shopper.RawApi\Vavatech.Shopper.RawApi.csproj", "{FFE0E683-61F0-4E50-AA0E-5E20F487D13E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.MinimalApi", "Vavatech.Shopper.MinimalApi\Vavatech.Shopper.MinimalApi.csproj", "{8F3FB6AD-44D7-474E-A360-C82E96943835}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{FFE0E683-61F0-4E50-AA0E-5E20F487D13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFE0E683-61F0-4E50-AA0E-5E20F487D13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFE0E683-61F0-4E50-AA0E-5E20F487D13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
