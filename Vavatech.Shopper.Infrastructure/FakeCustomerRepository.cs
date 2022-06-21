@@ -1,17 +1,47 @@
 ﻿using Bogus;
+using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
 
 namespace Vavatech.Shopper.Infrastructure
 {
-    public class FakeCustomerRepository : ICustomerRepository
+
+    public class FakeProductRepository : FakeEntityRepository<Product>, IProductRepository
+    {
+        public FakeProductRepository(Faker<Product> faker) : base(faker)
+        {
+        }
+
+        public IEnumerable<Product> Get(ProductSearchCriteria searchCriteria)
+        {
+            var query = entities.Values.AsQueryable();
+
+            if (searchCriteria.FromPrice.HasValue)
+            {
+                query = query.Where(p => p.UnitPrice >= searchCriteria.FromPrice);
+            }
+
+            if (searchCriteria.ToPrice.HasValue)
+            {
+                query = query.Where(p => p.UnitPrice <= searchCriteria.FromPrice);
+            }
+
+            if (!string.IsNullOrEmpty(searchCriteria.Color))
+            {
+                query = query.Where(p => p.Color.Equals(searchCriteria.Color, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return query.ToList();
+        }
+    }
+
+    public class FakeCustomerRepository : FakeEntityRepository<Customer>, ICustomerRepository
     {
         private IDictionary<int, Customer> customers;
 
-        public FakeCustomerRepository(Faker<Customer> faker)
+        public FakeCustomerRepository(Faker<Customer> faker) : base(faker)
         {
-            customers = faker.Generate(100).ToDictionary(p => p.Id);
         }
 
         public void Add(Customer customer)
@@ -64,9 +94,10 @@ namespace Vavatech.Shopper.Infrastructure
 
         }
 
-        public void Remove(int id)
+        public override void Remove(int id)
         {
-            customers.Remove(id);
+            Customer customer = Get(id);
+            customer.IsRemoved = true;
         }
 
         public void Update(Customer customer)
