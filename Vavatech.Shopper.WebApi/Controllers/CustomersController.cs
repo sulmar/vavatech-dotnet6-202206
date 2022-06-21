@@ -26,6 +26,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
         [HttpGet("/api/ping")]
         public string Ping()
         {
+           this.HttpContext.Response.WriteAsync("Hello World!");
+
             return "Pong";
         }
 
