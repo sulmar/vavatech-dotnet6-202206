@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 namespace Vavatech.Shopper.WebApi.Controllers
 {
 
-    [ApiController]
+    //[ApiController]
     [Route("api/customers")]
     public class CustomersController : ControllerBase
     {
@@ -92,6 +92,11 @@ namespace Vavatech.Shopper.WebApi.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Customer> Add([FromBody] Customer customer)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _customerRepository.Add(customer);
 
             //return Created($"https://localhost:5001/api/customers/{customer.Id}", customer);

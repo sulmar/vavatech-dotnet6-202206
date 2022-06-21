@@ -24,6 +24,7 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
             RuleFor(p => p.IsRemoved, f => f.Random.Bool(0.2f));
 
             Ignore(p => p.Pesel);
+            Ignore(p => p.LastOrder);
         }
     }
 }
