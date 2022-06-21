@@ -41,7 +41,7 @@ namespace Vavatech.Shopper.Infrastructure
 
     public class FakeCustomerRepository : FakeEntityRepository<Customer>, ICustomerRepository
     {
-        private IDictionary<int, Customer> customers;
+        private IDictionary<int, Customer> customers => entities;
 
         public FakeCustomerRepository(Faker<Customer> faker, IOptions<FakeEntityOptions> options) : base(faker, options)
         {
