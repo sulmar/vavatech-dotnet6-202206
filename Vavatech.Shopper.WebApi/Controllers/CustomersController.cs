@@ -4,11 +4,12 @@ using Vavatech.Shopper.Domain.Services;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
+using Microsoft.AspNetCore.Http;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
 
-
+    [ApiController]
     [Route("api/customers")]
     public class CustomersController : ControllerBase
     {
@@ -42,6 +43,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // GET api/customers/{id}
         // https://docs.microsoft.com/pl-pl/aspnet/core/fundamentals/routing?view=aspnetcore-6.0#route-constraints
         [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]
+        [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Customer> Get(int id)
         {
             var customer = _customerRepository.Get(id);
@@ -56,6 +59,9 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers/{lastName}
         [HttpGet("{lastName:minlength(3)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<Customer> Get(string lastName)
         {
             var customer = _customerRepository.Get(lastName);
@@ -82,6 +88,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // POST api/customers
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public ActionResult<Customer> Add([FromBody] Customer customer)
         {
             _customerRepository.Add(customer);
@@ -94,6 +102,9 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // PUT api/customers/{id}
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public ActionResult Put(int id, [FromBody] Customer customer)
         {
             if (id != customer.Id)
@@ -111,6 +122,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // PATCH api/customers/{id}
         // JS: https://www.npmjs.com/package/jsonpatch
         [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public ActionResult Patch(int id, [FromBody] JsonPatchDocument<Customer> jsonPatch)
         {
             var customer = _customerRepository.Get(id);
@@ -135,12 +148,12 @@ namespace Vavatech.Shopper.WebApi.Controllers
         }
 
 
-        public ActionResult<decimal> Calculate([FromServices] IPriceCalculatorService priceCalculatorService, int productId, int customerId)
-        {
-            var price = priceCalculatorService.CalculatePrice(productId, customerId);
+        //public ActionResult<decimal> Calculate([FromServices] IPriceCalculatorService priceCalculatorService, int productId, int customerId)
+        //{
+        //    var price = priceCalculatorService.CalculatePrice(productId, customerId);
 
-            return Ok(price);
-        }
+        //    return Ok(price);
+        //}
 
        
 
