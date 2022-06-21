@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Microsoft.Extensions.Options;
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
@@ -7,9 +8,11 @@ using Vavatech.Shopper.Models.SearchCriterias;
 namespace Vavatech.Shopper.Infrastructure
 {
 
+
+
     public class FakeProductRepository : FakeEntityRepository<Product>, IProductRepository
     {
-        public FakeProductRepository(Faker<Product> faker) : base(faker)
+        public FakeProductRepository(Faker<Product> faker, IOptions<FakeEntityOptions> options) : base(faker, options)
         {
         }
 
@@ -40,7 +43,7 @@ namespace Vavatech.Shopper.Infrastructure
     {
         private IDictionary<int, Customer> customers;
 
-        public FakeCustomerRepository(Faker<Customer> faker) : base(faker)
+        public FakeCustomerRepository(Faker<Customer> faker, IOptions<FakeEntityOptions> options) : base(faker, options)
         {
         }
 

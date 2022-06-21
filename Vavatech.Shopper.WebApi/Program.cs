@@ -28,7 +28,27 @@ builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));
 
+builder.Services.Configure<FakeEntityOptions>(builder.Configuration.GetSection("FakeOptions"));
+
+string environmentName = builder.Environment.EnvironmentName;
+
+builder.Configuration.AddJsonFile("appsettings.json", false);
+builder.Configuration.AddJsonFile($"appsettings.{environmentName}.json", false);
+builder.Configuration.AddXmlFile("appsettings.xml", true);
+builder.Configuration.AddIniFile("appsettings.ini", true);
+// builder.Configuration.AddCommandLine(args);
+// builder.Configuration.AddEnvironmentVariables();
+// builder.Configuration.AddInMemoryCollection();
+
+string connectionString = builder.Configuration.GetConnectionString("ShopperConnection");
+
+// builder.Services.AddDbContext()
+
+
 var app = builder.Build();
+
+string nbpUri = builder.Configuration["NBP:Uri:Host"];
+string nbpPort = builder.Configuration["NBP:Uri:Port"] ?? "80";
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

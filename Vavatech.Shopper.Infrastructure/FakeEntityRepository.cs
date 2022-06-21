@@ -1,17 +1,23 @@
 ﻿using Bogus;
+using Microsoft.Extensions.Options;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 
 namespace Vavatech.Shopper.Infrastructure
 {
+    public class FakeEntityOptions
+    {
+        public int Count { get; set; }
+    }
+
     public class FakeEntityRepository<TEntity> : IEntityRepository<TEntity>
         where TEntity : BaseEntity
     {
         protected readonly IDictionary<int, TEntity> entities;
 
-        public FakeEntityRepository(Faker<TEntity> faker)
+        public FakeEntityRepository(Faker<TEntity> faker, IOptions<FakeEntityOptions> options)
         {
-            entities = faker.Generate(100).ToDictionary(p => p.Id);
+            entities = faker.Generate(options.Value.Count).ToDictionary(p => p.Id);
         }
 
         public virtual void Add(TEntity entity)

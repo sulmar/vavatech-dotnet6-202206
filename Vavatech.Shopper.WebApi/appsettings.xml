@@ -1,0 +1,13 @@
+﻿<configuration>
+
+	<FakeOptions>
+		<Count>50</Count>
+	</FakeOptions>
+
+	<NBP>
+		<Uri>
+			<Port>9000</Port>
+		</Uri>
+	</NBP>
+
+</configuration>
