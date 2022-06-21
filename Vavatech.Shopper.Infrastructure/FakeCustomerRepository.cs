@@ -97,6 +97,11 @@ namespace Vavatech.Shopper.Infrastructure
 
         }
 
+        public Customer GetByEmail(string email)
+        {
+            return entities.Values.SingleOrDefault(c => c.Email.Equals(email));
+        }
+
         public override void Remove(int id)
         {
             Customer customer = Get(id);

@@ -1,5 +1,8 @@
 using Bogus;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Newtonsoft.Json.Converters;
+using Vavatech.Shopper.Domain.Validators;
 using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
@@ -12,7 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Install-Package Microsoft.AspNetCore.Mvc.NewtonsoftJson
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+// Install-Package FluentValidation.AspNetCore
+
+builder.Services.AddControllers()
+    .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<CustomerValidator>())
+    .AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
@@ -24,6 +31,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
 builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
+
+// builder.Services.AddSingleton<IValidator<Customer>, CustomerValidator>();
 
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));

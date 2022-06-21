@@ -25,6 +25,9 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
 
             Ignore(p => p.Pesel);
             Ignore(p => p.LastOrder);
+            Ignore(p => p.Salary);
+            Ignore(p => p.Password);
+            Ignore(p => p.ConfirmPassword);
         }
     }
 }
