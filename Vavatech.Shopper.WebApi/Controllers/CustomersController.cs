@@ -18,12 +18,14 @@ namespace Vavatech.Shopper.WebApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly ILogger<CustomersController> logger;
 
         private const int OverSizeLimit = 1_000_000;
 
-        public CustomersController(ICustomerRepository customerRepository)
+        public CustomersController(ICustomerRepository customerRepository, ILogger<CustomersController> logger)
         {
             _customerRepository = customerRepository;
+            this.logger = logger;
         }
 
 
@@ -88,6 +90,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
         public ActionResult<IEnumerable<Customer>> Get([FromQuery] CustomerSearchCriteria searchCriteria)
         {
             var req = this.HttpContext.Request;
+
+            logger.LogInformation("Get By {FirstName} {LastName} {Email}", searchCriteria.FirstName, searchCriteria.LastName, searchCriteria.Email);
 
             var customers = _customerRepository.Get(searchCriteria);
 

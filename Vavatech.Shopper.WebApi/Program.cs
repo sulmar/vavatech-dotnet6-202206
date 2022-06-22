@@ -4,6 +4,8 @@ using FluentValidation.AspNetCore;
 using Hangfire;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Converters;
+using Serilog;
+using Serilog.Formatting.Compact;
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Domain.Validators;
 using Vavatech.Shopper.Infrastructure;
@@ -14,6 +16,20 @@ using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.RouteConstraints;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+
+// Install-Package Serilog.AspNetCore
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File(new CompactJsonFormatter(), "logs/log.json")
+    .WriteTo.Seq("http://localhost:5341")
+    .CreateLogger();
+
+// Uruchomienie Seq jako kontener w Docker
+// docker run --name my-seq -d -e ACCEPT_EULA=y -p 5341:80 datalust/seq
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 

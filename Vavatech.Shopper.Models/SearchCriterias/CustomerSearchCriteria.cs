@@ -13,8 +13,8 @@ namespace Vavatech.Shopper.Models.SearchCriterias
 
     public class CustomerSearchCriteria : SearchCriteria
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
     }
 }
