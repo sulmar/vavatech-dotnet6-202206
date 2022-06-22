@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Models;
 
 Console.BackgroundColor = ConsoleColor.DarkGreen;
@@ -14,8 +15,10 @@ HubConnection connection = new HubConnectionBuilder()
     .WithUrl(url)
     .Build();
 
-connection.On<Customer>("NewCustomer",
+connection.On<Customer>(nameof(ICustomerClient.NewCustomer),
     customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
+
+// connection.OnNewCustomer(customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
 
 Console.WriteLine($"Connecting... {url}");
 await connection.StartAsync();

@@ -8,6 +8,6 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Use signal-R on singalr/customers");
 
-app.MapHub<CustomersHub>("signalr/customers");
+app.MapHub<CustomersStrongTypedHub>("signalr/customers");
 
 app.Run();

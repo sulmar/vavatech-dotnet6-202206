@@ -1,6 +1,7 @@
 ﻿
 using Bogus;
 using Microsoft.AspNetCore.SignalR.Client;
+using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 
@@ -39,10 +40,10 @@ var customers = faker.GenerateForever();
 foreach (var customer in customers)
 {
     Console.WriteLine($"Sending {customer.FirstName} {customer.LastName}...");
-    await connection.SendAsync("SendAddedCustomer", customer);
+    await connection.SendAsync(nameof(ICustomerHub.SendAddedCustomer), customer);
     Console.WriteLine("Sent.");
 
-    await Task.Delay(TimeSpan.FromSeconds(0.01));
+    await Task.Delay(TimeSpan.FromSeconds(1));
 }
 
 

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Models;
 
 namespace Vavatech.Shopper.SignalRServer.Hubs
 {
-
-    public class CustomersHub : Hub
+    public class CustomersStrongTypedHub : Hub<ICustomerClient>, ICustomerHub
     {
         private readonly ILogger<CustomersHub> logger;
 
-        public CustomersHub(ILogger<CustomersHub> logger)
+        public CustomersStrongTypedHub(ILogger<CustomersHub> logger)
         {
             this.logger = logger;
         }
@@ -23,16 +23,15 @@ namespace Vavatech.Shopper.SignalRServer.Hubs
 
             return base.OnConnectedAsync();
         }
-        
+
         public async Task SendAddedCustomer(Customer customer)
         {
-            // await this.Clients.All.SendAsync("NewCustomer", customer);
-            await this.Clients.Others.SendAsync("NewCustomer", customer);
+            await this.Clients.Others.NewCustomer(customer);
         }
 
         public async Task Ping()
         {
-            await this.Clients.Caller.SendAsync("Pong");
+            await this.Clients.Caller.Pong();
         }
     }
 }
