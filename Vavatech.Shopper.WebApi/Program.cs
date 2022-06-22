@@ -1,6 +1,7 @@
 using Bogus;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Converters;
 using Vavatech.Shopper.Domain;
@@ -9,6 +10,7 @@ using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
+using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.RouteConstraints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +39,19 @@ builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
 
 // builder.Services.AddSingleton<IValidator<Customer>, CustomerValidator>();
+
+
+// Install-Package Hangfire.AspNetCore
+// Install-Package Hangfire.InMemory
+// builder.Services.AddHangfire(options => options.UseInMemoryStorage());
+
+
+// Install-Paclage Hangfire.SqlServer
+builder.Services.AddHangfire(options => options.UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+
+builder.Services.AddHangfireServer();
+
+builder.Services.AddSignalR();
 
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));
@@ -81,5 +96,10 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.MapControllers();
+
+
+app.MapHangfireDashboard();
+
+app.MapHub<CustomersHub>("signalr/customers");
 
 app.Run();

@@ -7,7 +7,7 @@ Console.ForegroundColor = ConsoleColor.White;
 
 Console.WriteLine("Hello, Signal-R Receiver!");
 
-const string url = "https://localhost:7180/signalr/customers";
+const string url = "https://localhost:5001/signalr/customers";
 
 // Install-Package Microsoft.AspNetCore.SignalR.Client
 
@@ -17,6 +17,8 @@ HubConnection connection = new HubConnectionBuilder()
 
 connection.On<Customer>(nameof(ICustomerClient.NewCustomer),
     customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
+
+connection.On("DocumentReady", () => Console.WriteLine("Document generated."));
 
 // connection.OnNewCustomer(customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
 

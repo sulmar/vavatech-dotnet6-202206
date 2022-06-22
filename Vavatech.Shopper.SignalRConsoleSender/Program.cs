@@ -16,6 +16,7 @@ const string url = "https://localhost:7180/signalr/customers";
 
 HubConnection connection = new HubConnectionBuilder()
     .WithUrl(url)
+    .WithAutomaticReconnect()
     .Build();
 
 Console.WriteLine($"Connecting... {url}");

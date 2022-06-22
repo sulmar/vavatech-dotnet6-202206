@@ -2,13 +2,13 @@
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Models;
 
-namespace Vavatech.Shopper.SignalRServer.Hubs
+namespace Vavatech.Shopper.WebApi.Hubs
 {
-    public class CustomersStrongTypedHub : Hub<ICustomerClient>, ICustomerHub
+    public class CustomersHub : Hub<ICustomerClient>, ICustomerHub
     {
         private readonly ILogger<CustomersHub> logger;
 
-        public CustomersStrongTypedHub(ILogger<CustomersHub> logger)
+        public CustomersHub(ILogger<CustomersHub> logger)
         {
             this.logger = logger;
         }
@@ -35,7 +35,7 @@ namespace Vavatech.Shopper.SignalRServer.Hubs
         public async Task SendAddedCustomer(Customer customer)
         {
             await this.Clients.Others.NewCustomer(customer);
-            
+
             // await this.Clients.Group("GroupA").NewCustomer(customer);
         }
 

@@ -29,7 +29,7 @@ namespace Vavatech.Shopper.Domain.Validators
 
         private bool ExistsEmail(string email)
         {
-            return customerRepository.GetByEmail(email) != null;
+            return customerRepository.GetByEmail(email) == null;
         }
 
         private bool IsValidPesel(string pesel)

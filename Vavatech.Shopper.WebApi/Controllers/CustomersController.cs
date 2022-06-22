@@ -6,6 +6,9 @@ using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
 using Microsoft.AspNetCore.Http;
 using QuestPDF.Fluent;
+using Hangfire;
+using Microsoft.AspNetCore.SignalR;
+using Vavatech.Shopper.WebApi.Hubs;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
@@ -17,10 +20,10 @@ namespace Vavatech.Shopper.WebApi.Controllers
         private readonly ICustomerRepository _customerRepository;
 
         private const int OverSizeLimit = 1_000_000;
-        
+
         public CustomersController(ICustomerRepository customerRepository)
         {
-            _customerRepository = customerRepository;            
+            _customerRepository = customerRepository;
         }
 
 
@@ -28,7 +31,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
         [HttpGet("/api/ping")]
         public string Ping()
         {
-           this.HttpContext.Response.WriteAsync("Hello World!");
+            this.HttpContext.Response.WriteAsync("Hello World!");
 
             return "Pong";
         }
@@ -47,7 +50,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // GET api/customers/{id}
         // Accept: application/json
         // https://docs.microsoft.com/pl-pl/aspnet/core/fundamentals/routing?view=aspnetcore-6.0#route-constraints
-        [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]        
+        [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]
         [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Customer> Get(int id)
@@ -57,7 +60,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
             if (customer == null)
             {
                 return NotFound();
-            }    
+            }
 
             return Ok(customer);
         }
@@ -95,7 +98,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public ActionResult<Customer> Add([FromBody] Customer customer)
+        public async Task<ActionResult<Customer>> Add([FromBody] Customer customer, [FromServices] IHubContext<CustomersHub> customersHub)
         {
             //if (!this.ModelState.IsValid)
             //{
@@ -103,6 +106,8 @@ namespace Vavatech.Shopper.WebApi.Controllers
             //}
 
             _customerRepository.Add(customer);
+
+            await customersHub.Clients.All.SendAsync("NewCustomer", customer);
 
             //return Created($"https://localhost:5001/api/customers/{customer.Id}", customer);
 
@@ -160,7 +165,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers/{id}
         // Accept: application/pdf
-        [HttpGet("{id}/pdf")]        
+        [HttpGet("{id}/pdf")]
         public ActionResult GetPdf(int id)
         {
             Customer customer = _customerRepository.Get(id);
@@ -174,6 +179,42 @@ namespace Vavatech.Shopper.WebApi.Controllers
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(stream, "application/pdf");
+        }
+
+        // GET api/customers/{id}
+        // Accept: application/pdf
+        [HttpGet("{id}/longpdf")]
+        public ActionResult GetLongPdf(int id, [FromServices] IBackgroundJobClient jobClient, [FromServices] IHubContext<CustomersHub> customersHub)
+        {
+            Customer customer = _customerRepository.Get(id);
+
+            // Uwaga: wersja statyczna, nietestowalna!
+            // BackgroundJob.Enqueue(() => GenerateExtensions.GeneratePdf(customer));
+
+            // wersja instacyjna, testowalna :)
+            string parentId = jobClient.Enqueue(() => GenerateExtensions.GeneratePdf(customer));
+
+            // Wyślij po zakończeniu poprzedniego zadania
+            // jobClient.ContinueJobWith(parentId, () => customersHub.Clients.All.SendAsync("DocumentReady", System.Threading.CancellationToken.None));
+
+            // Wyślij po zakończeniu poprzedniego zadania
+            //jobClient.ContinueJobWith<IHubContext<CustomersHub>>(parentId, customersHub => customersHub.Clients.All.SendAsync("DocumentReady", System.Threading.CancellationToken.None));
+
+
+            //        BackgroundJob.Schedule<IHubContext<MySignalRHub>>(hubContext =>
+            //hubContext.Clients.All.SendAsync(
+            //    "MyMessage",
+            //    "MyMessageContent",
+            //    System.Threading.CancellationToken.None),
+            //TimeSpan.FromMinutes(2));
+
+
+            return Accepted();
+
+            // stream.Position = 0;
+            //stream.Seek(0, SeekOrigin.Begin);
+
+            //return File(stream, "application/pdf");
         }
 
         [HttpPost("{id}/photo")]
