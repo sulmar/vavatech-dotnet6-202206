@@ -18,7 +18,7 @@ HubConnection connection = new HubConnectionBuilder()
 connection.On<Customer>(nameof(ICustomerClient.NewCustomer),
     customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
 
-connection.On("DocumentReady", () => Console.WriteLine("Document generated."));
+connection.On<Customer>("DocumentReady", customer => Console.WriteLine($"Document generated for {customer.FirstName} {customer.LastName}"));
 
 // connection.OnNewCustomer(customer => Console.WriteLine($"Received {customer.FirstName} {customer.LastName}"));
 

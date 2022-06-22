@@ -12,6 +12,7 @@ using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
+using Vavatech.Shopper.WebApi.Controllers;
 using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.RouteConstraints;
 
@@ -53,6 +54,8 @@ builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
 builder.Services.AddSingleton<IProductRepository, FakeProductRepository>();
 builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
+builder.Services.AddSingleton<ICustomerService, CustomerService>();
+builder.Services.AddSingleton<IMessageService, SignalRMessageService>();
 
 // builder.Services.AddSingleton<IValidator<Customer>, CustomerValidator>();
 

@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Vavatech.Shopper.Domain.Services;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
-using Microsoft.AspNetCore.Http;
-using QuestPDF.Fluent;
 using Hangfire;
 using Microsoft.AspNetCore.SignalR;
 using Vavatech.Shopper.WebApi.Hubs;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
+
+
 
     [ApiController]
     [Route("api/customers")]
@@ -170,17 +169,11 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // GET api/customers/{id}
         // Accept: application/pdf
         [HttpGet("{id}/pdf")]
-        public ActionResult GetPdf(int id)
+        public ActionResult GetPdf(int id, [FromServices] ICustomerService customerService)
         {
             Customer customer = _customerRepository.Get(id);
 
-            var document = new CustomerDocument(customer);
-
-            Stream stream = new MemoryStream();
-            document.GeneratePdf(stream);
-
-            // stream.Position = 0;
-            stream.Seek(0, SeekOrigin.Begin);
+            Stream stream = customerService.GeneratePdf(customer);
 
             return File(stream, "application/pdf");
         }
@@ -188,21 +181,27 @@ namespace Vavatech.Shopper.WebApi.Controllers
         // GET api/customers/{id}
         // Accept: application/pdf
         [HttpGet("{id}/longpdf")]
-        public ActionResult GetLongPdf(int id, [FromServices] IBackgroundJobClient jobClient, [FromServices] IHubContext<CustomersHub> customersHub)
+        public ActionResult GetLongPdf(int id, 
+            [FromServices] IBackgroundJobClient jobClient, 
+            [FromServices] ICustomerService customerService,
+            [FromServices] IMessageService messageService)
         {
             Customer customer = _customerRepository.Get(id);
+
+            if (customer is null)
+                return NotFound();
 
             // Uwaga: wersja statyczna, nietestowalna!
             // BackgroundJob.Enqueue(() => GenerateExtensions.GeneratePdf(customer));
 
             // wersja instacyjna, testowalna :)
-            string parentId = jobClient.Enqueue(() => GenerateExtensions.GeneratePdf(customer));
+            string parentId = jobClient.Enqueue(() => customerService.GeneratePdf(customer));
 
             // Wyślij po zakończeniu poprzedniego zadania
             // jobClient.ContinueJobWith(parentId, () => customersHub.Clients.All.SendAsync("DocumentReady", System.Threading.CancellationToken.None));
 
             // Wyślij po zakończeniu poprzedniego zadania
-            //jobClient.ContinueJobWith<IHubContext<CustomersHub>>(parentId, customersHub => customersHub.Clients.All.SendAsync("DocumentReady", System.Threading.CancellationToken.None));
+            jobClient.ContinueJobWith(parentId, () => messageService.Send("DocumentReady", customer));
 
 
             //        BackgroundJob.Schedule<IHubContext<MySignalRHub>>(hubContext =>
