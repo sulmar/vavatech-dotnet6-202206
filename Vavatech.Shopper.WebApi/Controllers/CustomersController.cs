@@ -175,6 +175,31 @@ namespace Vavatech.Shopper.WebApi.Controllers
             return File(stream, "application/pdf");
         }
 
+        [HttpPost("{id}/photo")]
+        public ActionResult Upload(IFormFile formFile, [FromServices] IWebHostEnvironment env)
+        {
+            if (formFile.ContentType != "image/png")
+            {
+                return BadRequest("Invalid format");
+            }
+
+            if (formFile.Length > 1_000_000)
+            {
+                return BadRequest("Over size limit");
+            }
+
+            string path = Path.Combine(env.ContentRootPath, "uploads", formFile.FileName);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            Stream stream = new FileStream(path, FileMode.Create);
+            formFile.CopyTo(stream);
+
+            return Ok();
+
+        }
+
+
+
 
         //public ActionResult<decimal> Calculate([FromServices] IPriceCalculatorService priceCalculatorService, int productId, int customerId)
         //{
