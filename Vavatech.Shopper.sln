@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.RawApi", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.MinimalApi", "Vavatech.Shopper.MinimalApi\Vavatech.Shopper.MinimalApi.csproj", "{8F3FB6AD-44D7-474E-A360-C82E96943835}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.SignalRServer", "Vavatech.Shopper.SignalRServer\Vavatech.Shopper.SignalRServer.csproj", "{12A0CCC8-4D01-48BA-BF0D-7FC3AEFA828D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.SignalRConsoleSender", "Vavatech.Shopper.SignalRConsoleSender\Vavatech.Shopper.SignalRConsoleSender.csproj", "{DBA91131-8885-4B6A-A1C0-1204E2175B68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.SignalRConsoleReceiver", "Vavatech.Shopper.SignalRConsoleReceiver\Vavatech.Shopper.SignalRConsoleReceiver.csproj", "{FC7C5F25-0878-44B8-AC29-2F32BD3FF3F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +63,18 @@ Global
 		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F3FB6AD-44D7-474E-A360-C82E96943835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12A0CCC8-4D01-48BA-BF0D-7FC3AEFA828D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A0CCC8-4D01-48BA-BF0D-7FC3AEFA828D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A0CCC8-4D01-48BA-BF0D-7FC3AEFA828D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A0CCC8-4D01-48BA-BF0D-7FC3AEFA828D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA91131-8885-4B6A-A1C0-1204E2175B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA91131-8885-4B6A-A1C0-1204E2175B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA91131-8885-4B6A-A1C0-1204E2175B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA91131-8885-4B6A-A1C0-1204E2175B68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC7C5F25-0878-44B8-AC29-2F32BD3FF3F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC7C5F25-0878-44B8-AC29-2F32BD3FF3F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC7C5F25-0878-44B8-AC29-2F32BD3FF3F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC7C5F25-0878-44B8-AC29-2F32BD3FF3F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
