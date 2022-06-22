@@ -7,4 +7,5 @@ public interface ICustomerRepository : IEntityRepository<Customer>
     Customer Get(string lastName);
     IEnumerable<Customer> Get(CustomerSearchCriteria searchCriteria);
     Customer GetByEmail(string email);
+
 }

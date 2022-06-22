@@ -5,6 +5,7 @@ using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.Models.SearchCriterias;
 using Microsoft.AspNetCore.Http;
+using QuestPDF.Fluent;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
@@ -43,8 +44,9 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
 
         // GET api/customers/{id}
+        // Accept: application/json
         // https://docs.microsoft.com/pl-pl/aspnet/core/fundamentals/routing?view=aspnetcore-6.0#route-constraints
-        [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]
+        [HttpGet("{id:int:min(1)}", Name = "GetCustomerById")]        
         [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Customer> Get(int id)
@@ -155,6 +157,25 @@ namespace Vavatech.Shopper.WebApi.Controllers
         }
 
 
+        // GET api/customers/{id}
+        // Accept: application/pdf
+        [HttpGet("{id}/pdf")]        
+        public ActionResult GetPdf(int id)
+        {
+            Customer customer = _customerRepository.Get(id);
+
+            var document = new CustomerDocument(customer);
+
+            Stream stream = new MemoryStream();
+            document.GeneratePdf(stream);
+
+            // stream.Position = 0;
+            stream.Seek(0, SeekOrigin.Begin);
+
+            return File(stream, "application/pdf");
+        }
+
+
         //public ActionResult<decimal> Calculate([FromServices] IPriceCalculatorService priceCalculatorService, int productId, int customerId)
         //{
         //    var price = priceCalculatorService.CalculatePrice(productId, customerId);
@@ -162,7 +183,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
         //    return Ok(price);
         //}
 
-       
+
 
     }
 }

@@ -1,6 +1,7 @@
 using Bogus;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Converters;
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Domain.Validators;
@@ -72,6 +73,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "StaticFiles")),
+    RequestPath = "/Assets"
+});
 
 app.MapControllers();
 
