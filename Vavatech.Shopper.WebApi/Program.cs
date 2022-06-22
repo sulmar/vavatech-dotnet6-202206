@@ -2,6 +2,7 @@ using Bogus;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Newtonsoft.Json.Converters;
+using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Domain.Validators;
 using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
@@ -32,6 +33,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
 builder.Services.AddSingleton<IProductRepository, FakeProductRepository>();
 builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
+builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
 
 // builder.Services.AddSingleton<IValidator<Customer>, CustomerValidator>();
 
