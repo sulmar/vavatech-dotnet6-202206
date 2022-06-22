@@ -15,8 +15,9 @@ namespace Vavatech.Shopper.WebApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
-        
 
+        private const int OverSizeLimit = 1_000_000;
+        
         public CustomersController(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;            
@@ -183,7 +184,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
                 return BadRequest("Invalid format");
             }
 
-            if (formFile.Length > 1_000_000)
+            if (formFile.Length > OverSizeLimit)
             {
                 return BadRequest("Over size limit");
             }
