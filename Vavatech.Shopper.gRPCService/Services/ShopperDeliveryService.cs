@@ -20,5 +20,42 @@ namespace Vavatech.Shopper.gRPCService.Services
             return Task.FromResult(response);
 
         }
+
+        public override async Task ShipChangedStatus(ShipChangedStatusRequest request, IServerStreamWriter<ShipChangedStatusResponse> responseStream, ServerCallContext context)
+        {
+
+            var statuses = NextShipChangedStatus
+                .Where(s=>s.DeliveryId == request.DeliveryId);
+
+            foreach (var status in statuses)
+            {
+                await responseStream.WriteAsync(status);
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }            
+        }
+
+        
+        // Leniwa kolekcja
+        private IEnumerable<ShipChangedStatusResponse> NextShipChangedStatus
+        { 
+            get
+            {
+                yield return new ShipChangedStatusResponse { DeliveryId = 1, Status = ShipChangedStatusResponse.Types.Status.Registered};
+                yield return new ShipChangedStatusResponse { DeliveryId = 2, Status = ShipChangedStatusResponse.Types.Status.Registered };
+                yield return new ShipChangedStatusResponse { DeliveryId = 3, Status = ShipChangedStatusResponse.Types.Status.Registered };
+
+                yield return new ShipChangedStatusResponse { DeliveryId = 1, Status = ShipChangedStatusResponse.Types.Status.Inprogress};
+                yield return new ShipChangedStatusResponse { DeliveryId = 1, Status = ShipChangedStatusResponse.Types.Status.Shipped };
+
+                yield return new ShipChangedStatusResponse { DeliveryId = 2, Status = ShipChangedStatusResponse.Types.Status.Inprogress };
+                yield return new ShipChangedStatusResponse { DeliveryId = 3, Status = ShipChangedStatusResponse.Types.Status.Inprogress };
+
+                yield return new ShipChangedStatusResponse { DeliveryId = 3, Status = ShipChangedStatusResponse.Types.Status.Inprogress };
+                yield return new ShipChangedStatusResponse { DeliveryId = 2, Status = ShipChangedStatusResponse.Types.Status.Shipped };
+
+            }
+         }
+            
     }
 }

@@ -6,6 +6,17 @@ package Shopper;
 
 service DeliveryService {
 	rpc ConfirmDelivery (ConfirmDeliveryRequest) returns (ConfirmDeliveryResponse);
+	rpc ShipChangedStatus (ShipChangedStatusRequest) returns (stream ShipChangedStatusResponse);
+	rpc LocationChanged (stream LocationRequest) returns (LocationResponse);
+}
+
+message LocationRequest {
+	float latitude = 1;
+	float longitude = 2;
+}
+
+message LocationResponse {
+
 }
 
 message ConfirmDeliveryRequest {
@@ -15,5 +26,21 @@ message ConfirmDeliveryRequest {
 
 message ConfirmDeliveryResponse { 
 	bool is_confirmed = 1;
+}
+
+message ShipChangedStatusRequest {
+	int32 delivery_id = 1;
+}
+
+message ShipChangedStatusResponse {
+	int32 delivery_id = 1;
+
+	enum Status {
+		REGISTERED = 0;
+		INPROGRESS = 1;
+		SHIPPED = 2;
+	}
+
+	Status status = 2;
 }
 

@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Vavatech.Shopper.gRPCService;
 
@@ -15,7 +16,7 @@ var client = new DeliveryService.DeliveryServiceClient(channel);
 var requests = new Faker<ConfirmDeliveryRequest>()
     .RuleFor(p => p.DeliveryId, f => f.Random.Int(1))
     .RuleFor(p=>p.IsShipped, f=>f.Random.Bool(0.9f))
-    .GenerateForever();
+    .GenerateLazy(10);
 
 foreach (var request in requests)
 {
@@ -24,6 +25,20 @@ foreach (var request in requests)
     Console.WriteLine($"Sent. {response.IsConfirmed}");
 
   await Task.Delay(TimeSpan.FromSeconds(1));
+}
+
+
+var requestStatus = new ShipChangedStatusRequest { DeliveryId = 1 };
+
+Console.WriteLine("Send ShipChangedStatus");
+var subscription = client.ShipChangedStatus(requestStatus);
+Console.WriteLine("Subscribed.");
+
+var statuses = subscription.ResponseStream.ReadAllAsync();
+
+await foreach (var status in statuses)
+{
+    Console.WriteLine($"Changed status: {status.DeliveryId} {status.Status}");
 }
 
 Console.WriteLine("Press any key to exit.");
