@@ -2,6 +2,9 @@ using Bogus;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hangfire;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -13,6 +16,7 @@ using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
 using Vavatech.Shopper.WebApi.Controllers;
+using Vavatech.Shopper.WebApi.HealthChecks;
 using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.RouteConstraints;
 
@@ -72,10 +76,32 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddSignalR();
 
+builder.Services.AddHealthChecks()
+    .AddCheck<NbpApiHealthCheck>("NBPApi", tags: new[] { "api"})
+    .AddHangfire(options => { options.MinimumAvailableServers = 1; }, "Hangfire Db", tags: new[] { "database" })
+    .AddSignalRHub("https://localhost:5001/signalr/customers", "SignalR Customers", tags: new[] { "signalr" })
+    .AddCheck("Random", () =>
+    {
+        if (DateTime.Now.Minute % 2 == 0)
+        {
+            return HealthCheckResult.Healthy();
+        }
+        else
+        {
+            return HealthCheckResult.Unhealthy();
+        }
+    });
+
+// Install-Package AspNetCore.HealthChecks.UI
+builder.Services.AddHealthChecksUI()
+    .AddInMemoryStorage(); // Install-Package AspNetCore.HealthChecks.UI.InMemory.Storage
+
+
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));
 
 builder.Services.Configure<FakeEntityOptions>(builder.Configuration.GetSection("FakeOptions"));
+builder.Services.Configure<NbpApiOptions>(builder.Configuration.GetSection("NBP"));
 
 string environmentName = builder.Environment.EnvironmentName;
 
@@ -120,5 +146,13 @@ app.MapControllers();
 app.MapHangfireDashboard();
 
 app.MapHub<CustomersHub>("signalr/customers");
+
+app.MapHealthChecks("/hc", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecksUI(); // /healthchecks-ui
 
 app.Run();
