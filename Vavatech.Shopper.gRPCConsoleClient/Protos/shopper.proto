@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Vavatech.Shopper.gRPCService";
+
+package Shopper;
+
+service DeliveryService {
+	rpc ConfirmDelivery (ConfirmDeliveryRequest) returns (ConfirmDeliveryResponse);
+}
+
+message ConfirmDeliveryRequest {
+	int32 delivery_id = 1;
+	bool is_shipped = 2;
+}
+
+message ConfirmDeliveryResponse { 
+	bool is_confirmed = 1;
+}
+
