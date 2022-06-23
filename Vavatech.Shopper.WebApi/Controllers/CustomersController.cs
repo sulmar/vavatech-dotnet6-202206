@@ -7,6 +7,7 @@ using Hangfire;
 using Microsoft.AspNetCore.SignalR;
 using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.CustomAttributes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
@@ -89,8 +90,14 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers?firstName=John&lastName=Smith
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<Customer>> Get([FromQuery] CustomerSearchCriteria searchCriteria)
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();                
+            }
+
             var req = this.HttpContext.Request;
 
             logger.LogInformation("Get By {FirstName} {LastName} {Email}", searchCriteria.FirstName, searchCriteria.LastName, searchCriteria.Email);

@@ -13,7 +13,7 @@ public class Customer : BaseEntity
     public decimal Salary { get; set; }
   //  public Order? LastOrder { get; set; }
 
-    public string Password { get; set; }
+    public string HashedPassword { get; set; }
     public string ConfirmPassword { get; set; }
 }
 

@@ -15,6 +15,7 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
     {
         public CustomerFaker()
         {
+            UseSeed(1);
             StrictMode(true);
             RuleFor(p => p.Id, f => f.IndexFaker);
             RuleFor(p => p.FirstName, f => f.Person.FirstName);
@@ -26,7 +27,7 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
             Ignore(p => p.Pesel);
             //Ignore(p => p.LastOrder);
             Ignore(p => p.Salary);
-            Ignore(p => p.Password);
+            RuleFor(p => p.HashedPassword, f => "12345");
             Ignore(p => p.ConfirmPassword);
         }
     }

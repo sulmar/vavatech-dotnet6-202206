@@ -22,7 +22,7 @@ namespace Vavatech.Shopper.Domain.Validators
             RuleFor(p => p.LastName).NotEmpty();
             RuleFor(p => p.Email).EmailAddress().NotEmpty().Must(ExistsEmail);
             RuleFor(p => p.Pesel).Length(11);
-            RuleFor(p => p.Password).Equal(p => p.ConfirmPassword);
+            RuleFor(p => p.HashedPassword).Equal(p => p.ConfirmPassword);
             RuleFor(p => p.Salary).InclusiveBetween(1, 1000);
             RuleFor(p => p.Pesel).Must(pesel => IsValidPesel(pesel));            
         }
