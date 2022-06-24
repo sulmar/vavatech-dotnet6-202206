@@ -1,4 +1,5 @@
 using Bogus;
+using Microsoft.AspNetCore.Identity;
 using Vavatech.AuthService.Api.Models;
 using Vavatech.AuthService.Api.Repositories;
 
@@ -8,6 +9,10 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IUserRepository, FakeUserRepository>();
 builder.Services.AddSingleton<Faker<User>, UserFaker>();
 builder.Services.AddSingleton<ITokenService, JwtTokenService>();
+
+// PasswordHasher
+// ASP.NET Core Identity Version 3: PBKDF2 with HMAC-SHA256, 128-bit salt, 256-bit subkey, 10000 iterations
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();
 

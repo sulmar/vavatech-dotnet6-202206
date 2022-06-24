@@ -1,14 +1,17 @@
-﻿using Vavatech.AuthService.Api.Repositories;
+﻿using Microsoft.AspNetCore.Identity;
+using Vavatech.AuthService.Api.Repositories;
 
 namespace Vavatech.AuthService.Api.Models
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository userRepository;
+        private readonly IPasswordHasher<User> passwordHasher;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
         {
             this.userRepository = userRepository;
+            this.passwordHasher = passwordHasher;
         }
 
         public bool TryAuthorize(string username, string password, out User user)
@@ -20,7 +23,9 @@ namespace Vavatech.AuthService.Api.Models
                 return false;
             }
 
-            return user.HashedPassword == password;
+            var result = passwordHasher.VerifyHashedPassword(user, user.HashedPassword, password);
+
+            return result == PasswordVerificationResult.Success;
         }
     }
 }
