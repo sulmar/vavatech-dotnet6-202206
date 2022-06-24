@@ -15,6 +15,15 @@ public class Customer : BaseEntity
 
     public string HashedPassword { get; set; }
     public string ConfirmPassword { get; set; }
+
+    public Employee Owner { get; set; }
+
+
+}
+
+public class Employee : BaseEntity
+{
+    public string Username { get; set; }
 }
 
 public enum Gender

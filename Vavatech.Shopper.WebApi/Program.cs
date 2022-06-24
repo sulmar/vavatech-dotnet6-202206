@@ -64,8 +64,11 @@ builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
 builder.Services.AddSingleton<IProductRepository, FakeProductRepository>();
 builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();
+builder.Services.AddSingleton<Faker<Employee>, EmployeeFaker>();
 builder.Services.AddSingleton<ICustomerService, CustomerService>();
 builder.Services.AddSingleton<IMessageService, SignalRMessageService>();
+
+builder.Services.AddSingleton<IEmployeeRepository, FakeEmployeeRepository>();
 
 // builder.Services.AddSingleton<IValidator<Customer>, CustomerValidator>();
 
@@ -136,9 +139,15 @@ builder.Services.AddAuthorization(options =>
                 .RequireClaim(ClaimTypes.DateOfBirth)
                 .RequireMinimumAge(18)
                 .RequireAuthenticatedUser());
+
+    options.AddPolicy("theSameOwner", policy =>
+    {
+        policy.AddRequirements(new TheSameOwnerRequirment());
+    });
 });
 
 builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, TheSameOwnerHandler>();
 
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));

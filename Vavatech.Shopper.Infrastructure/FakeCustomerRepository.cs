@@ -8,8 +8,6 @@ using Vavatech.Shopper.Models.SearchCriterias;
 namespace Vavatech.Shopper.Infrastructure
 {
 
-
-
     public class FakeProductRepository : FakeEntityRepository<Product>, IProductRepository
     {
         public FakeProductRepository(Faker<Product> faker, IOptions<FakeEntityOptions> options) : base(faker, options)

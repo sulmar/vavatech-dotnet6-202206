@@ -14,8 +14,10 @@ namespace Vavatech.AuthService.Api.Models
 
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Role, "trainer"),
+                new Claim(ClaimTypes.Name, user.UserName),
 
+                new Claim(ClaimTypes.Role, "trainer"),
+                
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToShortDateString())
             };

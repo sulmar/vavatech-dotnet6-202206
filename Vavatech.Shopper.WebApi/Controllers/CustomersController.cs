@@ -190,16 +190,28 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers/{id}
         // Accept: application/pdf
-        [Authorize(Policy = "adult")]
+        // [Authorize(Policy = "adult")]
         [HttpGet("{id}")]
         [AcceptHeader("application/pdf")]
-        public ActionResult GetPdf(int id, [FromServices] ICustomerService customerService)
+        public async Task<ActionResult> GetPdf(int id, [FromServices] ICustomerService customerService, [FromServices] IAuthorizationService authorizationService)
         {
             Customer customer = _customerRepository.Get(id);
 
-            Stream stream = customerService.GeneratePdf(customer);
+            var isAdult = await authorizationService.AuthorizeAsync(User, "adult");
 
-            return File(stream, "application/pdf");
+            var result = await authorizationService.AuthorizeAsync(User, customer, "theSameOwner");
+
+            if (result.Succeeded)
+            {
+
+                Stream stream = customerService.GeneratePdf(customer);
+
+                return File(stream, "application/pdf");
+            }
+            else
+            {
+                return Forbid();
+            }
         }
 
         // GET api/customers/{id}

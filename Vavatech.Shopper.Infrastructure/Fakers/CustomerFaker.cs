@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vavatech.Shopper.Models;
+using Vavatech.Shopper.Models.Repositories;
 
 namespace Vavatech.Shopper.Infrastructure.Fakers
 {
@@ -13,8 +14,10 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
 
     public class CustomerFaker : Faker<Customer>
     {
-        public CustomerFaker()
+        public CustomerFaker(IEmployeeRepository employeeRepository)
         {
+            var employees = employeeRepository.Get();
+
             UseSeed(1);
             StrictMode(true);
             RuleFor(p => p.Id, f => f.IndexFaker);
@@ -29,6 +32,18 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
             Ignore(p => p.Salary);
             RuleFor(p => p.HashedPassword, f => "12345");
             Ignore(p => p.ConfirmPassword);
+
+            RuleFor(p => p.Owner, f => new Employee {  Username = "Micheal92" });
+        }
+    }
+
+    public class EmployeeFaker : Faker<Employee>
+    {
+        public EmployeeFaker()
+        {
+            UseSeed(1);
+            RuleFor(p => p.Id, f => f.IndexFaker);
+            RuleFor(p => p.Username, f => f.Person.UserName);
         }
     }
 }

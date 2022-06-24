@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Vavatech.Shopper.Models;
 
 namespace Vavatech.Shopper.WebApi.AuthenticationHandlers
 {
@@ -42,4 +43,33 @@ namespace Vavatech.Shopper.WebApi.AuthenticationHandlers
 
         }
     }
+
+
+    public class TheSameOwnerRequirment : IAuthorizationRequirement
+    {
+    }
+
+    public class TheSameOwnerHandler : AuthorizationHandler<TheSameOwnerRequirment, Customer>
+    {
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, TheSameOwnerRequirment requirement, Customer resource)
+        {
+            string username = context.User.FindFirstValue(ClaimTypes.Name);
+
+            if (resource.Owner.Username == username)
+            {
+                context.Succeed(requirement);
+            }
+            else
+            {
+                context.Fail();
+            }
+
+            return Task.CompletedTask;
+
+        }
+    }
+
+
+
+
 }

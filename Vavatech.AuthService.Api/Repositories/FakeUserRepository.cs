@@ -9,7 +9,7 @@ namespace Vavatech.AuthService.Api.Repositories
 
         public FakeUserRepository(Faker<User> faker)
         {
-            _users = faker.Generate(20).ToDictionary(p => p.Id);
+            _users = faker.Generate(100).ToDictionary(p => p.Id);
         }
 
 
