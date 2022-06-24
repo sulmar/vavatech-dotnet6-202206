@@ -14,6 +14,8 @@ namespace Vavatech.AuthService.Api.Repositories
             RuleFor(p => p.LastName, f => f.Person.LastName);
             RuleFor(p => p.Email, f => f.Person.Email);
             RuleFor(p => p.HashedPassword, f => "12345");
+
+            RuleFor(p => p.DateOfBirth, f => f.Date.Past(20));
         }
     }
 }

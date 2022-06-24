@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using Hangfire;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.FileProviders;
@@ -11,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Serilog;
 using Serilog.Formatting.Compact;
+using System.Security.Claims;
 using System.Text;
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Domain.Validators;
@@ -18,6 +20,7 @@ using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 using Vavatech.Shopper.Models.Repositories;
+using Vavatech.Shopper.WebApi.AuthenticationHandlers;
 using Vavatech.Shopper.WebApi.Controllers;
 using Vavatech.Shopper.WebApi.HealthChecks;
 using Vavatech.Shopper.WebApi.Hubs;
@@ -125,6 +128,17 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("adult", 
+        policy => 
+            policy
+                .RequireClaim(ClaimTypes.DateOfBirth)
+                .RequireMinimumAge(18)
+                .RequireAuthenticatedUser());
+});
+
+builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
 
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));

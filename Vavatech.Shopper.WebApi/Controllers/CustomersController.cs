@@ -190,7 +190,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers/{id}
         // Accept: application/pdf
-        [Authorize(Roles = "adult")]
+        [Authorize(Policy = "adult")]
         [HttpGet("{id}")]
         [AcceptHeader("application/pdf")]
         public ActionResult GetPdf(int id, [FromServices] ICustomerService customerService)

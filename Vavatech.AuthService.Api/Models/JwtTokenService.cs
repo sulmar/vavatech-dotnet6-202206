@@ -17,6 +17,7 @@ namespace Vavatech.AuthService.Api.Models
                 new Claim(ClaimTypes.Role, "trainer"),
 
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToShortDateString())
             };
 
             // Install-Package System.IdentityModel.Tokens.Jwt
