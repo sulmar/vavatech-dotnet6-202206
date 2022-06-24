@@ -14,10 +14,9 @@ namespace Vavatech.Shopper.Infrastructure.Fakers
 
     public class CustomerFaker : Faker<Customer>
     {
-        public CustomerFaker(IEmployeeRepository employeeRepository)
+      
+        public CustomerFaker()
         {
-            var employees = employeeRepository.Get();
-
             UseSeed(1);
             StrictMode(true);
             RuleFor(p => p.Id, f => f.IndexFaker);

@@ -35,7 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.Contracts"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.gRPCCodeFirstConsoleClient", "Vavatech.Shopper.gRPCCodeFirstConsoleClient\Vavatech.Shopper.gRPCCodeFirstConsoleClient.csproj", "{51E7578A-6471-446C-8285-EEAC1C6EB21C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.AuthService.Api", "Vavatech.AuthService.Api\Vavatech.AuthService.Api.csproj", "{C5764156-8203-4D51-9C13-F7BA7D017F49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.AuthService.Api", "Vavatech.AuthService.Api\Vavatech.AuthService.Api.csproj", "{C5764156-8203-4D51-9C13-F7BA7D017F49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.IdentityService.Api", "Vavatech.IdentityService.Api\Vavatech.IdentityService.Api.csproj", "{F009EFB1-E805-4FE0-94B9-4FEBA28D18C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.Web", "Vavatech.Shopper.Web\Vavatech.Shopper.Web.csproj", "{8777D8A3-9210-47B4-981B-7697693464D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.MVC", "Vavatech.Shopper.MVC\Vavatech.Shopper.MVC.csproj", "{8B530798-5569-4778-8A97-B0FAED5B8D34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +117,18 @@ Global
 		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F009EFB1-E805-4FE0-94B9-4FEBA28D18C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F009EFB1-E805-4FE0-94B9-4FEBA28D18C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F009EFB1-E805-4FE0-94B9-4FEBA28D18C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F009EFB1-E805-4FE0-94B9-4FEBA28D18C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8777D8A3-9210-47B4-981B-7697693464D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8777D8A3-9210-47B4-981B-7697693464D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8777D8A3-9210-47B4-981B-7697693464D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8777D8A3-9210-47B4-981B-7697693464D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B530798-5569-4778-8A97-B0FAED5B8D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B530798-5569-4778-8A97-B0FAED5B8D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B530798-5569-4778-8A97-B0FAED5B8D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B530798-5569-4778-8A97-B0FAED5B8D34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

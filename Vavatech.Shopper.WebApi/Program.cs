@@ -60,7 +60,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ICustomerRepository, FakeCustomerRepository>();
+builder.Services.AddScoped<ICustomerRepository, FakeCustomerRepository>();
 builder.Services.AddSingleton<IProductRepository, FakeProductRepository>();
 builder.Services.AddSingleton<Faker<Customer>, CustomerFaker>();
 builder.Services.AddSingleton<Faker<Product>, ProductFaker>();

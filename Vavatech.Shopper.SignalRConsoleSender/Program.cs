@@ -2,6 +2,7 @@
 using Bogus;
 using Microsoft.AspNetCore.SignalR.Client;
 using Vavatech.Shopper.Domain;
+using Vavatech.Shopper.Infrastructure;
 using Vavatech.Shopper.Infrastructure.Fakers;
 using Vavatech.Shopper.Models;
 
