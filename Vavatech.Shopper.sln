@@ -27,13 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.SignalRCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.gRPCService", "Vavatech.Shopper.gRPCService\Vavatech.Shopper.gRPCService.csproj", "{C3B858DD-DA08-486A-8D3C-70BBBC4640A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.gRPCConsoleClient", "Vavatech.Shopper.gRPCConsoleClient\Vavatech.Shopper.gRPCConsoleClient.csproj", "{AA91077D-CC51-4354-A296-80C5864E3A3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.gRPCConsoleClient", "Vavatech.Shopper.gRPCConsoleClient\Vavatech.Shopper.gRPCConsoleClient.csproj", "{AA91077D-CC51-4354-A296-80C5864E3A3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.gRPCCodeFirstService", "Vavatech.Shopper.gRPCCodeFirstService\Vavatech.Shopper.gRPCCodeFirstService.csproj", "{2ABDBD58-84EA-4732-BDD9-0F4EE0FA01B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.gRPCCodeFirstService", "Vavatech.Shopper.gRPCCodeFirstService\Vavatech.Shopper.gRPCCodeFirstService.csproj", "{2ABDBD58-84EA-4732-BDD9-0F4EE0FA01B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.Contracts", "Vavatech.Shopper.Contracts\Vavatech.Shopper.Contracts.csproj", "{B624CDB1-0A4A-49EC-9A8F-C1F8D5EBFB2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.Contracts", "Vavatech.Shopper.Contracts\Vavatech.Shopper.Contracts.csproj", "{B624CDB1-0A4A-49EC-9A8F-C1F8D5EBFB2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.Shopper.gRPCCodeFirstConsoleClient", "Vavatech.Shopper.gRPCCodeFirstConsoleClient\Vavatech.Shopper.gRPCCodeFirstConsoleClient.csproj", "{51E7578A-6471-446C-8285-EEAC1C6EB21C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vavatech.Shopper.gRPCCodeFirstConsoleClient", "Vavatech.Shopper.gRPCCodeFirstConsoleClient\Vavatech.Shopper.gRPCCodeFirstConsoleClient.csproj", "{51E7578A-6471-446C-8285-EEAC1C6EB21C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vavatech.AuthService.Api", "Vavatech.AuthService.Api\Vavatech.AuthService.Api.csproj", "{C5764156-8203-4D51-9C13-F7BA7D017F49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{51E7578A-6471-446C-8285-EEAC1C6EB21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51E7578A-6471-446C-8285-EEAC1C6EB21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51E7578A-6471-446C-8285-EEAC1C6EB21C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5764156-8203-4D51-9C13-F7BA7D017F49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

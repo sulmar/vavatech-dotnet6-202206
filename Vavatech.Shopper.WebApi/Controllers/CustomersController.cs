@@ -8,12 +8,11 @@ using Microsoft.AspNetCore.SignalR;
 using Vavatech.Shopper.WebApi.Hubs;
 using Vavatech.Shopper.WebApi.CustomAttributes;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Vavatech.Shopper.WebApi.Controllers
 {
-
-
-
+    [Authorize]
     [ApiController]
     [Route("api/customers")]
     public class CustomersController : ControllerBase
@@ -31,6 +30,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
 
         // GET api/ping
+        [AllowAnonymous]
         [HttpGet("/api/ping")]
         public string Ping()
         {
@@ -90,12 +90,24 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers?firstName=John&lastName=Smith
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "developer,trainer")]
         public ActionResult<IEnumerable<Customer>> Get([FromQuery] CustomerSearchCriteria searchCriteria)
         {
             if (!this.User.Identity.IsAuthenticated)
             {
                 return Unauthorized();                
+            }
+
+            if (this.User.HasClaim(c=>c.Type == ClaimTypes.Email))
+            {
+                string email = this.User.FindFirstValue(ClaimTypes.Email);
+
+                var emailClaim = this.User.FindFirst(ClaimTypes.Email);                
+            }
+
+            if (this.User.IsInRole("trainer"))
+            {
+
             }
 
             var req = this.HttpContext.Request;
@@ -178,6 +190,7 @@ namespace Vavatech.Shopper.WebApi.Controllers
 
         // GET api/customers/{id}
         // Accept: application/pdf
+        [Authorize(Roles = "adult")]
         [HttpGet("{id}")]
         [AcceptHeader("application/pdf")]
         public ActionResult GetPdf(int id, [FromServices] ICustomerService customerService)

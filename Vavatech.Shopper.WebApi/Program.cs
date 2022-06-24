@@ -3,12 +3,15 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hangfire;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Serilog;
 using Serilog.Formatting.Compact;
+using System.Text;
 using Vavatech.Shopper.Domain;
 using Vavatech.Shopper.Domain.Validators;
 using Vavatech.Shopper.Infrastructure;
@@ -97,6 +100,32 @@ builder.Services.AddHealthChecksUI()
     .AddInMemoryStorage(); // Install-Package AspNetCore.HealthChecks.UI.InMemory.Storage
 
 
+var secretKey = "your-256-bit-secret";
+string issuer = "Vavatech";
+var key = Encoding.UTF8.GetBytes(secretKey);
+
+// Install-Package Microsoft.AspNetCore.Authentication.JwtBearer
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+
+            ValidateAudience = true,
+            ValidAudience = issuer
+        };
+    });
+
+
 // Rejestracja w³asnej regu³y
 builder.Services.Configure<RouteOptions>(options => options.ConstraintMap.Add("barcode", typeof(BarcodeRouteConstraint)));
 
@@ -132,6 +161,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles(new StaticFileOptions

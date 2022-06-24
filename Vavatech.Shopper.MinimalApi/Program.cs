@@ -21,7 +21,8 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/ping", () => "Pong");
 
-app.MapGet("/api/customers", (ICustomerRepository repository) => Results.Ok(repository.Get()));
+app.MapGet("/api/customers", (ICustomerRepository repository) => Results.Ok(repository.Get()))
+    .RequireAuthorization();
 
 app.MapGet("api/test", () => Results.Extensions.NotModified());
 
